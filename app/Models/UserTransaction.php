@@ -23,7 +23,7 @@ class UserTransaction extends Model
     protected function createdAt(): Attribute
     {
         return new Attribute(
-            get: fn ($value) =>  Carbon::parse($value)->tz('Asia/Yangon')->format('d-m-Y, g:i:s A'),
+            get: fn ($value) =>  Carbon::parse($value)->format('d-m-Y, g:i:s A'),
         );
     }
 
@@ -45,5 +45,17 @@ class UserTransaction extends Model
         }
 
         return $query->whereBetween('created_at', [$date['0'].' 00:00:00', $date['1'].' 23:59:59']);
+    }
+
+    public function scopeWithdrawals($query){
+        return $query->whereStatus('withdrawal')
+                    ->whereDate('created_at', now()->today())
+                    ->sum('amount');
+    }
+
+    public function scopeDeposits($query){
+        return $query->whereStatus('deposit')
+                    ->whereDate('created_at', now()->today())
+                    ->sum('amount');
     }
 }

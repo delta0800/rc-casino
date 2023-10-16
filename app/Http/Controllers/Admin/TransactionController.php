@@ -4,15 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Super;
-use App\Models\Senior;
-use App\Models\Master;
-use App\Models\Agent;
 use App\Models\SuperTransaction;
 use App\Models\SeniorTransaction;
 use App\Models\MasterTransaction;
 use App\Models\AgentTransaction;
 use App\Models\UserTransaction;
+use App\Models\Super;
+use App\Models\Senior;
+use App\Models\Master;
+use App\Models\Agent;
 use App\Http\Requests\BalanceTransactionRequest;
 use DataTables;
 
@@ -29,23 +29,23 @@ class TransactionController extends Controller
             $query = SuperTransaction::with('super')->filterDates()->latest();
             return Datatables::of($query)
                     ->addIndexColumn()
-                    ->addColumn('name', function ($transaction) {
-                        return $transaction->super->name;
+                    ->addColumn('name', function ($row) {
+                        return $row->super->name;
                     })
-                    ->addColumn('username', function ($transaction) {
-                        return $transaction->super->username;
+                    ->addColumn('username', function ($row) {
+                        return $row->super->username;
                     })
-                    ->addColumn('before', function ($transaction) {
-                        return number_format($transaction->before);
+                    ->addColumn('before', function ($row) {
+                        return number_format($row->before);
                     })
-                    ->addColumn('after', function ($transaction) {
-                        return number_format($transaction->after);
+                    ->addColumn('after', function ($row) {
+                        return number_format($row->after);
                     })
-                    ->addColumn('amount', function ($transaction) {
-                        return number_format($transaction->amount);
+                    ->addColumn('amount', function ($row) {
+                        return number_format($row->amount);
                     })
-                    ->addColumn('status', function ($transaction) {
-                        if ($transaction->status == "deposit") {
+                    ->addColumn('status', function ($row) {
+                        if ($row->status == "deposit") {
                             return '<label class="label label-success">ထည့်</label>';
                         }else{
                             return '<label class="label label-danger">ထုတ်</label>';
@@ -87,13 +87,15 @@ class TransactionController extends Controller
         }
         $validatedData['super_id'] = $super->id;
         $validatedData['before'] = $super->amount;
-        $validatedData['after'] = $super->amount + $request->amount;
+        
         switch ($request->status) {
             case 'deposit':
+                $validatedData['after'] = $super->amount + $request->amount;
                 $super->update(['amount' => $super->amount + $request->amount]);
                 break;
             
             default:
+                $validatedData['after'] = $super->amount - $request->amount;
                 $super->update(['amount' => $super->amount - $request->amount]);
                 break;
         }
@@ -104,20 +106,29 @@ class TransactionController extends Controller
     public function seniorTransaction(Request $request)
     {
         if ($request->ajax()) {
-            $query = SeniorTransaction::with('senior', 'master')->filterDates()->latest();
+            $query = SeniorTransaction::with('senior', 'super')->filterDates()->latest();
             return Datatables::of($query)
                     ->addIndexColumn()
-                    ->addColumn('amount', function ($transaction) {
-                        return number_format($transaction->amount);
+                    ->addColumn('super', function ($row) {
+                        return $row->super->username;
                     })
-                    ->addColumn('master', function ($transaction) {
-                        return $transaction->master->username;
+                    ->addColumn('name', function ($row) {
+                        return $row->senior->name;
                     })
-                    ->addColumn('senior', function ($transaction) {
-                        return $transaction->senior->username;
+                    ->addColumn('username', function ($row) {
+                        return $row->senior->username;
                     })
-                    ->addColumn('status', function ($transaction) {
-                        if ($transaction->status == "deposit") {
+                    ->addColumn('before', function ($row) {
+                        return number_format($row->before);
+                    })
+                    ->addColumn('after', function ($row) {
+                        return number_format($row->after);
+                    })
+                    ->addColumn('amount', function ($row) {
+                        return number_format($row->amount);
+                    })
+                    ->addColumn('status', function ($row) {
+                        if ($row->status == "deposit") {
                             return '<label class="label label-success">ထည့်</label>';
                         }else{
                             return '<label class="label label-danger">ထုတ်</label>';
@@ -158,17 +169,26 @@ class TransactionController extends Controller
             $query = MasterTransaction::with('senior', 'master')->filterDates()->latest();
             return Datatables::of($query)
                     ->addIndexColumn()
-                    ->addColumn('amount', function ($transaction) {
-                        return number_format($transaction->amount);
+                    ->addColumn('senior', function ($row) {
+                        return $row->super->username;
                     })
-                    ->addColumn('master', function ($transaction) {
-                        return $transaction->master->username;
+                    ->addColumn('name', function ($row) {
+                        return $row->master->name;
                     })
-                    ->addColumn('senior', function ($transaction) {
-                        return $transaction->senior->username;
+                    ->addColumn('username', function ($row) {
+                        return $row->master->username;
                     })
-                    ->addColumn('status', function ($transaction) {
-                        if ($transaction->status == "deposit") {
+                    ->addColumn('before', function ($row) {
+                        return number_format($row->before);
+                    })
+                    ->addColumn('after', function ($row) {
+                        return number_format($row->after);
+                    })
+                    ->addColumn('amount', function ($row) {
+                        return number_format($row->amount);
+                    })
+                    ->addColumn('status', function ($row) {
+                        if ($row->status == "deposit") {
                             return '<label class="label label-success">ထည့်</label>';
                         }else{
                             return '<label class="label label-danger">ထုတ်</label>';
@@ -209,17 +229,26 @@ class TransactionController extends Controller
             $query = AgentTransaction::with('agent', 'master')->filterDates()->latest();
             return Datatables::of($query)
                     ->addIndexColumn()
-                    ->addColumn('amount', function ($transaction) {
-                        return number_format($transaction->amount);
+                    ->addColumn('master', function ($row) {
+                        return $row->master->username;
                     })
-                    ->addColumn('master', function ($transaction) {
-                        return $transaction->master->username;
+                    ->addColumn('name', function ($row) {
+                        return $row->agent->name;
                     })
-                    ->addColumn('agent', function ($transaction) {
-                        return $transaction->agent->username;
+                    ->addColumn('username', function ($row) {
+                        return $row->agent->username;
                     })
-                    ->addColumn('status', function ($transaction) {
-                        if ($transaction->status == "deposit") {
+                    ->addColumn('before', function ($row) {
+                        return number_format($row->before);
+                    })
+                    ->addColumn('after', function ($row) {
+                        return number_format($row->after);
+                    })
+                    ->addColumn('amount', function ($row) {
+                        return number_format($row->amount);
+                    })
+                    ->addColumn('status', function ($row) {
+                        if ($row->status == "deposit") {
                             return '<label class="label label-success">ထည့်</label>';
                         }else{
                             return '<label class="label label-danger">ထုတ်</label>';
@@ -260,17 +289,26 @@ class TransactionController extends Controller
             $query = UserTransaction::with('agent', 'user')->filterDates()->latest();
             return Datatables::of($query)
                     ->addIndexColumn()
-                    ->addColumn('amount', function ($transaction) {
-                        return number_format($transaction->amount);
+                    ->addColumn('agent', function ($row) {
+                        return $row->agent->username;
                     })
-                    ->addColumn('user', function ($transaction) {
-                        return $transaction->user->username;
+                    ->addColumn('name', function ($row) {
+                        return $row->user->name;
                     })
-                    ->addColumn('agent', function ($transaction) {
-                        return $transaction->agent->username;
+                    ->addColumn('username', function ($row) {
+                        return $row->user->username;
                     })
-                    ->addColumn('status', function ($transaction) {
-                        if ($transaction->status == "deposit") {
+                    ->addColumn('before', function ($row) {
+                        return number_format($row->before);
+                    })
+                    ->addColumn('after', function ($row) {
+                        return number_format($row->after);
+                    })
+                    ->addColumn('amount', function ($row) {
+                        return number_format($row->amount);
+                    })
+                    ->addColumn('status', function ($row) {
+                        if ($row->status == "deposit") {
                             return '<label class="label label-success">ထည့်</label>';
                         }else{
                             return '<label class="label label-danger">ထုတ်</label>';
@@ -280,7 +318,7 @@ class TransactionController extends Controller
                         if (!empty($request->get('search'))) {
                             $instance->whereHas('user', function($w) use($request){
                                 $search = $request->get('search');
-                                $w->orWhere('name', 'LIKE', "%$search%");
+                                $w->where('name', 'LIKE', "%$search%");
                                 $w->orWhere('phone', 'LIKE', "%$search%");
                             });
                         }

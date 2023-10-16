@@ -22,6 +22,7 @@ class Admin extends Authenticatable
         'username', 
         'password', 
         'is_super',
+        'password_changed_at'
     ];
 
     /**

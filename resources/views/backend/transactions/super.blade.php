@@ -50,9 +50,9 @@
                           <th>အမည်</th>
                           <th>သို့</th>
                           <th>ထည့်/ထုတ်</th>
-                          <th>မထည့်မှီ</th>
+                          <th>မတိုင်မှီ</th>
                           <th>ငွေပမာဏ</th>
-                          <th>ထည့်ပြီး</th>
+                          <th>ပြီးနောက်</th>
                         </tr>
                       </thead>
                       <tfoot class="text-right">

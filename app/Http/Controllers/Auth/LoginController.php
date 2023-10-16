@@ -7,6 +7,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class LoginController extends Controller
 {
@@ -147,30 +148,109 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
-        if (Auth::guard('admin')->check()) {
-            Auth::guard('admin')->logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
+        switch ($this->guardName()) {
+            case 'admin':
+                Auth::guard('admin')->logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
 
-            return redirect()->guest(route('login.admin'))->with('status', 'You has been logged out!');
-        } elseif (Auth::guard('senior')->check()) {
-            Auth::guard('senior')->logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
+                return redirect()->guest(route('login.admin'))->with('status', 'You have been successfully logged out!');
+                break;
+            
+            case 'super':
+                Auth::guard('super')->logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
 
-            return redirect()->guest(route('login.senior'))->with('status', 'You has been logged out!');
-        } elseif (Auth::guard('master')->check()) {
-            Auth::guard('master')->logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
+                return redirect()->guest(route('login.super'))->with('status', 'You have been successfully logged out!');
+                break;
 
-            return redirect()->guest(route('login.master'))->with('status', 'You has been logged out!');
-        } else {
-            Auth::guard('agent')->logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
+            case 'senior':
+                Auth::guard('senior')->logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
 
-            return redirect()->guest(route('login.agent'))->with('status', 'You has been logged out!');
+                return redirect()->guest(route('login.senior'))->with('status', 'You have been successfully logged out!');
+                break;
+
+            case 'master':
+                Auth::guard('master')->logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+
+                return redirect()->guest(route('login.master'))->with('status', 'You have been successfully logged out!');
+                break;
+            default:
+                Auth::guard('agent')->logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+
+                return redirect()->guest(route('login.agent'))->with('status', 'You have been successfully logged out!');
+                break;
+        }
+    }
+
+    public function passwordExpired()
+    {
+        return view('auth.change-password');
+    }
+
+    public function changePassword(Request $request)
+    {
+        $user = Auth::user();
+        $user->update([
+            'password'=> $request->password,
+            'password_changed_at' => Carbon::now()->toDateTimeString()
+        ]);
+        switch ($this->guardName()) {
+            case 'admin':
+                Auth::guard('admin')->logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+
+                return redirect()->guest(route('login.admin'))->with('status', 'Password changed successfully, You can now login !');
+                break;
+            
+            case 'super':
+                Auth::guard('super')->logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+
+                return redirect()->guest(route('login.super'))->with('status', 'Password changed successfully, You can now login !');
+                break;
+
+            case 'senior':
+                Auth::guard('senior')->logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+
+                return redirect()->guest(route('login.senior'))->with('status', 'Password changed successfully, You can now login !');
+                break;
+
+            case 'master':
+                Auth::guard('master')->logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+
+                return redirect()->guest(route('login.master'))->with('status', 'Password changed successfully, You can now login !');
+                break;
+            default:
+                Auth::guard('agent')->logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+
+                return redirect()->guest(route('login.agent'))->with('status', 'Password changed successfully, You can now login !');
+                break;
+        }
+    }
+
+    public function guardName()
+    {
+        $guards = array_keys(config('auth.guards'));
+        foreach($guards as $guard){
+            if(auth()->guard($guard)->check()){
+                return $guard;
+            }
         }
     }
 }

@@ -17,7 +17,7 @@ class SamePassword implements ValidationRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         if (Hash::check($value, Auth::user()->password)) {
-            $fail('The :attribute cannot be same as your current password.');
+            $fail('New Password cannot be same as your current password. Please choose a different password.');
         }
     }
 }

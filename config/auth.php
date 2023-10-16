@@ -44,31 +44,31 @@ return [
         'admin' => [
            'driver' => 'session',
            'provider' => 'admins',
-           'remember' => now()->addMonths(3)->diffInMinutes(),
+           'remember' => now()->addMonths(1)->diffInMinutes(),
         ],
 
         'super' => [
            'driver' => 'session',
            'provider' => 'supers',
-           'remember' => now()->addMonths(3)->diffInMinutes(),
+           'remember' => now()->addMonths(1)->diffInMinutes(),
         ],
 
         'senior' => [
            'driver' => 'session',
            'provider' => 'seniors',
-           'remember' => now()->addMonths(3)->diffInMinutes(),
+           'remember' => now()->addMonths(1)->diffInMinutes(),
         ],
 
         'master' => [
            'driver' => 'session',
            'provider' => 'masters',
-           'remember' => now()->addMonths(3)->diffInMinutes(),
+           'remember' => now()->addMonths(1)->diffInMinutes(),
         ],
 
         'agent' => [
            'driver' => 'session',
            'provider' => 'agents',
-           'remember' => now()->addMonths(3)->diffInMinutes(),
+           'remember' => now()->addMonths(1)->diffInMinutes(),
         ],
     ],
 
@@ -166,5 +166,6 @@ return [
     */
 
     'password_timeout' => 10800,
+    'password_expires_days' => env('PASSWORD_EXPIRES_DAYS', '2'),
 
 ];

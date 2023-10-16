@@ -42,7 +42,6 @@
                     </div>
                     <div class="col-md-4 ml-auto">
                       <select class="js-example-basic-single w-100" id="js-example-basic-single-one">
-                        <option value="">-- Select Status --</option>
                         <option value="deposit">ထည့်</option>
                         <option value="withdrawal">ထုတ်</option>
                       </select>
@@ -56,16 +55,18 @@
                         <tr>
                           <th>စဉ်</th>
                           <th>အချိန်</th>
+                          <th>မှ</th>
+                          <th>အမည်</th>
                           <th>သို့</th>
                           <th>ထည့်/ထုတ်</th>
-                          <th>မထည့်မှီ</th>
+                          <th>မတိုင်မှီ</th>
                           <th>ငွေပမာဏ</th>
-                          <th>ထည့်ပြီး</th>
+                          <th>ပြီးနောက်</th>
                         </tr>
                       </thead>
                       <tfoot class="text-right">
                         <tr>
-                          <th colspan="4" class="bg-dark text-white">Total :</th>
+                          <th colspan="6" class="bg-dark text-white">Total :</th>
                           <th></th>
                           <th></th>
                           <th></th>
@@ -112,13 +113,17 @@
       columns: [
         {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
         {data: 'created_at', name: 'created_at'},
+        {data: 'super', name: 'super'},
         {data: 'name', name: 'name'},
+        {data: 'username', name: 'username'},
         {data: 'status', name: 'status'},
+        {data: 'before', name: 'before'},
         {data: 'amount', name: 'amount'},
+        {data: 'after', name: 'after'},
       ],
       columnDefs: [
       { 
-        targets: [4],
+        targets: [5,6,7],
         className: 'text-right'
       }],
       footerCallback: function ( row, data, start, end, display ) {
@@ -132,15 +137,31 @@
           i : 0;
         };
 
+        var before = api
+        .column( 5 )
+        .data()
+        .reduce( function (a, b) {
+          return intVal(a) + intVal(b);
+        }, 0 );
+
         var amount = api
-        .column( 4 )
+        .column( 6 )
+        .data()
+        .reduce( function (a, b) {
+          return intVal(a) + intVal(b);
+        }, 0 );
+
+        var after = api
+        .column( 7 )
         .data()
         .reduce( function (a, b) {
           return intVal(a) + intVal(b);
         }, 0 );
 
         // Update footer by showing the total with the reference of the column index 
-        $( api.column( 4 ).footer() ).html(amount.toLocaleString("en"));
+        $( api.column( 5 ).footer() ).html(before.toLocaleString("en"));
+        $( api.column( 6 ).footer() ).html(amount.toLocaleString("en"));
+        $( api.column( 7 ).footer() ).html(after.toLocaleString("en"));
       },
     });
 

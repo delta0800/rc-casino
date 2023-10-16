@@ -49,6 +49,36 @@ class AccountCreatedService
 
     public function username()
     {
-        return 'SU'.str_pad(mt_rand(1, 999999), 6, '0', STR_PAD_LEFT);
+        switch ($this->guardName()) {
+            case 'admin':
+                return 'SU'.str_pad(mt_rand(1, 999999), 6, '0', STR_PAD_LEFT);
+                break;
+            
+            case 'super':
+                return 'SE'.str_pad(mt_rand(1, 999999), 6, '0', STR_PAD_LEFT);
+                break;
+
+            case 'senior':
+                return 'MS'.str_pad(mt_rand(1, 999999), 6, '0', STR_PAD_LEFT);
+                break;
+
+            case 'master':
+                return 'AG'.str_pad(mt_rand(1, 999999), 6, '0', STR_PAD_LEFT);
+                break;
+                
+            default:
+                return str_pad(mt_rand(1, 9999999999), 10, '0', STR_PAD_LEFT);
+                break;
+        }
+    }
+
+    public function guardName()
+    {
+        $guards = array_keys(config('auth.guards'));
+        foreach($guards as $guard){
+            if(auth()->guard($guard)->check()){
+                return $guard;
+            }
+        }
     }
 }

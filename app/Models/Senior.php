@@ -20,12 +20,13 @@ class Senior extends Authenticatable
 
     protected $fillable = [
         'name', 
-        'master_id', 
+        'super_id', 
         'username', 
         'amount', 
         'banned_till', 
         'password', 
         'percentage', 
+        'password_changed_at'
     ];
 
     /**
@@ -48,7 +49,7 @@ class Senior extends Authenticatable
     protected function createdAt(): Attribute
     {
         return new Attribute(
-            get: fn ($value) =>  Carbon::parse($value)->tz('Asia/Yangon')->format('d-m-Y, g:i:s A'),
+            get: fn ($value) =>  Carbon::parse($value)->format('d-m-Y, g:i:s A'),
         );
     }
 

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('percentage')->default('0');
             $table->string('password');
             $table->string('banned_till')->nullable();
+            $table->timestamp('password_changed_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

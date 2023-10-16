@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('banned_till')->nullable();
             $table->rememberToken();
+            $table->timestamp('password_changed_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

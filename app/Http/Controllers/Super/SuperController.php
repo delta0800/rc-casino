@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Super;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -9,45 +9,37 @@ use App\Models\Senior;
 use App\Models\Master;
 use App\Models\Agent;
 use App\Models\User;
-use App\Models\SuperTransaction;
-use App\Services\GameService;
+use App\Models\SeniorTransaction;
+use Illuminate\Support\Facades\Auth;
 
-class AdminController extends Controller
+class SuperController extends Controller
 {
     public function index(Request $request)
     {
-        $count_super = Super::countusers();
         $count_senior = Senior::countusers();
         $count_master = Master::countusers();
         $count_agent = Agent::countusers();
         $count_user = User::countusers();
 
-        $sum_super = Super::sumusers();
         $sum_senior = Senior::sumusers();
         $sum_master = Master::sumusers();
         $sum_agent = Agent::sumusers();
         $sum_user = User::sumusers();
 
-        $deposits_super = SuperTransaction::deposits();
-        $withdrawals_super = SuperTransaction::withdrawals();
-        // dd($deposits_super);
-        $game_service = new GameService();
-        $provider_amount = $game_service->agentCredit();
+        $deposits_senior = SeniorTransaction::deposits();
+        $withdrawals_senior = SeniorTransaction::withdrawals();
         
-        return view('admins.dashboard', compact(
-            'count_super', 
+        return view('supers.dashboard', compact(
             'count_senior', 
             'count_master', 
             'count_agent', 
             'count_user', 
             'sum_user',
-            'sum_super', 
             'sum_senior', 
             'sum_master', 
             'sum_agent', 
-            'deposits_super',
-            'withdrawals_super',
-            'provider_amount',
+            'deposits_senior',
+            'withdrawals_senior',
         ));
     }
 }

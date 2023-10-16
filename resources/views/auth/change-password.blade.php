@@ -1,11 +1,11 @@
 @extends('auth.layout')
-@section('title', 'Login')
+@section('title', 'Change Password')
 @section('content')
 <section class="login-block">
   <div class="container-fluid">
     <div class="row">
       <div class="col-sm-12">
-        <form method="POST" action='{{ url("sys-private/$url") }}' class="md-float-material form-material">
+        <form method="POST" action="{{ route('password.change') }}" class="md-float-material form-material">
           @csrf
           <div class="text-center">
             <img src="{{ asset('backend/png/logo.png') }}" style="width: 120px; height: 120px;" class="img-radius" alt="Royal Casino">
@@ -14,39 +14,38 @@
             <div class="card-block">
               <div class="row m-b-20">
                 <div class="col-md-12">
-                  <h3 class="text-center txt-primary">{{ isset($url) ? ucwords($url) : ""}} {{ __('Login') }}</h3>
+                  <h3 class="text-center txt-primary">Update your password</h3>
                 </div>
               </div>
-              <p class="text-muted text-center p-b-5">Sign in with your account</p>
               <div class="form-group form-primary">
-                <input id="username" type="text" class="form-control form-control-lg @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username">
+                <input id="current_password" type="password" class="form-control form-control-lg @error('current_password') is-invalid @enderror" name="current_password" value="{{ old('current_password') }}" required autocomplete="current_password">
                 <span class="form-bar"></span>
-                @error('username')
+                @error('current_password')
                 <span class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
                 </span>
                 @enderror
-                <label class="float-label">Username</label>
+                <label class="float-label">Current Password</label>
               </div>
               <div class="form-group form-primary">
                 <input id="password" type="password" class="form-control form-control-lg @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
                 <span class="form-bar"></span>
-                <label class="float-label">Password</label>
+                @error('password')
+                <span class="invalid-feedback" role="alert">
+                  <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+                <label class="float-label">New Password</label>
               </div>
-              <div class="row m-t-25 text-left">
-                <div class="col-12">
-                  <div class="checkbox-fade fade-in-primary">
-                    <label>
-                      <input type="checkbox" name="remember_me" id="remember_me" {{ old('remember_me') ? 'checked' : '' }}>
-                      <span class="cr"><i class="cr-icon icofont icofont-ui-check txt-primary"></i></span>
-                      <span class="text-inverse">Remember me</span>
-                    </label>
-                  </div>
-                </div>
+              <div class="form-group form-primary">
+                <input id="password_confirmation" type="password" class="form-control form-control-lg @error('password_confirmation') is-invalid @enderror" name="password_confirmation" required autocomplete="password_confirmation">
+                <span class="form-bar"></span>
+                <label class="float-label">New Confirm Password</label>
               </div>
+
               <div class="row m-t-30">
                 <div class="col-md-12">
-                  <button type="submit" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20">LOGIN</button>
+                  <button type="submit" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20">Update Password</button>
                 </div>
               </div>
             </div>

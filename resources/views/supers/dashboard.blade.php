@@ -113,23 +113,12 @@
                 <div class="card-block">
                   <div class="row">
                     <div class="col-xl-3 col-md-6">
-                      <h6>Supers</h6>
-                      <h5 class="f-w-700">{{$count_super}}
-                        <i class="fas fa-angle-double-right text-c-blue f-18 m-l-10"></i>
-                        <span class="text-c-green m-l-10">MMK {{number_format($sum_super)}}</span>
-                      </h5>
-                    </div>
-                    <div class="col-xl-3 col-md-6">
-                      <h6>Agent Credits</h6>
-                      <h5 class="f-w-700">{{number_format($provider_amount['data'])}}</h5>
-                    </div>
-                    <div class="col-xl-3 col-md-6">
                       <h6>Completed Deposits</h6>
-                      <h5 class="f-w-700">{{number_format($deposits_super)}}</h5>
+                      <h5 class="f-w-700">{{number_format($deposits_senior)}}</h5>
                     </div>
                     <div class="col-xl-3 col-md-6">
                       <h6>Completed Withdrawals</h6>
-                      <h5 class="f-w-700">{{number_format($withdrawals_super)}}</h5>
+                      <h5 class="f-w-700">{{number_format($withdrawals_senior)}}</h5>
                     </div>
                   </div>
                 </div>

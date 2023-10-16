@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('banned_till')->nullable();
             $table->foreignId('senior_id')->constrained('seniors');
             $table->rememberToken();
+            $table->timestamp('password_changed_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

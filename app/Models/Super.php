@@ -25,6 +25,7 @@ class Super extends Authenticatable
         'banned_till', 
         'password', 
         'percentage', 
+        'password_changed_at'
     ];
 
     /**
@@ -46,7 +47,7 @@ class Super extends Authenticatable
     protected function createdAt(): Attribute
     {
         return new Attribute(
-            get: fn ($value) =>  Carbon::parse($value)->tz('Asia/Yangon')->format('d-m-Y, g:i:s A'),
+            get: fn ($value) =>  Carbon::parse($value)->format('d-m-Y, g:i:s A'),
         );
     }
 

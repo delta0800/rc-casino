@@ -11,8 +11,6 @@
     <meta name="keywords" content="Royal Casino" />
     <meta name="author" content="Royal Casino" />
     <link rel="icon" href="{{ asset('backend/png/logo.png') }}" type="image/x-icon">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Quicksand:500,700" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/css/waves.min.css') }}" type="text/css" media="all">
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/css/feather.css') }}">
@@ -25,7 +23,6 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/css/buttons.datatables.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/css/select2.min.css') }}" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/css/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/css/pages.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/css/switchery.min.css') }}">
@@ -33,10 +30,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
     <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:500,700" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     @stack('style')
 </head>
 @include('layouts.partials.nav')
 @include('layouts.partials.sidebar')
-{{-- @include('flash-message') --}}
+@include('layouts.flash-message')
 @yield('content')
 @include('layouts.partials.footer')
