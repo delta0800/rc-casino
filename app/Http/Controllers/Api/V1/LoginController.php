@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\UserResource;
 use App\Services\AccountCreatedService;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\ChangePasswordRequest;
+use Carbon\Carbon;
 
 class LoginController extends BaseController
 {
@@ -44,29 +46,16 @@ class LoginController extends BaseController
         } 
     }
 
-    public function changePassword(Request $request)
+    public function changePassword(ChangePasswordRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'old_password' => 'required',
-            'new_password' => 'required|string|min:8',
-            'confirm_password' => 'required|same:new_password',
-        ]);
-     
-        if($validator->fails()){
-            return $this->sendError('Validation Error.', $validator->errors());       
-        }
         $user = $request->user();
-
-        if ((Hash::check(request('old_password'), $user->password)) == false) {
-            return $this->sendError('Validation Error.', ['error'=>'Check your old password.']);
-        } else if ((Hash::check(request('new_password'), $user->password)) == true) {
-            return $this->sendError('Validation Error.', ['error'=>'Please enter a password which is not similar then current password.']);
-        } else {
-            $user->tokens()->delete();
-            $user->update(['password' => $validatedData['new_password']]);
-            $success['user_info'] =  new UserResource($user);
-            return $this->sendResponse($success, 'Password changed successfully.');
-        }
+        $user->tokens()->delete();
+        $user->update([
+            'password' => $request->password,
+            'password_changed_at' => Carbon::now()->toDateTimeString(),
+        ]);
+        $success['user_info'] =  new UserResource($user);
+        return $this->sendResponse($success, 'Password changed successfully.');
     }
 
     public function user(Request $request)

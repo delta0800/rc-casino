@@ -29,6 +29,7 @@ class User extends Authenticatable
         'amount', 
         'banned_till', 
         'password', 
+        'password_changed_at'
     ];
 
     /**

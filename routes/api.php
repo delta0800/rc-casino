@@ -43,9 +43,10 @@ Route::group([
     Route::post('game-lists', 'gameListByProvider');
     Route::post('launch-games', 'launchGames');
     Route::post('create-member', 'createMember');
+    Route::post('check-member', 'checkUsername');
     Route::post('get-balance', 'getUserBalance');
     Route::post('make-transfer', 'makeTransfer');
-    Route::post('agent-credits', 'balanceDue');
+    // Route::post('agent-credits', 'balanceDue');
     Route::post('betting-logs', 'getBettings');
 });
 
